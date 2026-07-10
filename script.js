@@ -172,7 +172,6 @@ const svgsB = {
     redondo: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="CURRENT_COLOR"/></svg>`,
     quadrado: `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" rx="20" fill="CURRENT_COLOR"/></svg>`,
     estrela: `<svg viewBox="0 0 100 100"><polygon points="50,5 61,35 95,35 68,57 79,91 50,70 21,91 32,57 5,35 39,35" fill="CURRENT_COLOR"/></svg>`,
-    nuvem: `<svg viewBox="0 0 100 100"><path d="M 25,65 A 20,20 0 0,1 40,30 A 25,25 0 0,1 80,45 A 20,20 0 0,1 75,80 L 25,80 Z" fill="CURRENT_COLOR"/></svg>`,
     coracao: `<svg viewBox="0 0 100 100"><path d="M50,90 L43,83 C18,60 5,45 5,30 C5,15 15,5 30,5 C40,5 47,10 50,18 C53,10 60,5 70,5 C85,5 95,15 95,30 C95,45 82,60 57,83 L50,90 Z" fill="CURRENT_COLOR"/></svg>`
 };
 
@@ -306,9 +305,9 @@ function initGasolina() {
     const story = document.querySelector('#game-contents .story-box');
     if(story) {
         story.innerHTML = `
-            <p>Leopoldo foi deixar Olívia na casa da Eleonora. A luz da gasolina acendeu indicando que só dava para andar mais <strong>${combAtual} km</strong>. A casa da Eleonora ficava a <strong>${dEleonora} km</strong> dali.</p>
-            <p>Lá, viram a gatinha Cristal fugindo. Andaram de carro por <strong>${dPadaria} km</strong>, pegaram a gata na padaria e voltaram para a casa da Eleonora. Olívia e a Cristal ficaram, e Leopoldo foi ao posto que fica a <strong>${dPosto} km</strong> da casa da Eleonora.</p>
-            <p class="highlight-text">A gasolina será suficiente para ele chegar ao posto?</p>
+            <p>Leopoldo foi deixar Olívia na casa da Eleonora. Antes de partirem, a luz da gasolina acendeu indicando que só dava para andar mais <strong>${combAtual} km</strong>. A casa da Eleonora ficava a <strong>${dEleonora} km</strong> dali.
+            Ao chegarem, viram a gatinha Cristal fugindo. Foram atrás dela de carro por mais <strong>${dPadaria} km</strong>, pegaram a gata em uma padaria e voltaram para a casa da Eleonora. Olívia e Cristal ficaram lá, e Leopoldo foi ao posto que fica a <strong>${dPosto} km</strong> da casa da Eleonora.</p>
+            <p class="highlight-text">A gasolina foi suficiente para ele chegar ao posto?</p>
         `;
     }
 
