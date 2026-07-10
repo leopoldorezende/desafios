@@ -44,8 +44,15 @@
 
         <div id="screen-game" class="screen">
             <div class="game-header">
-                <button class="btn-back" onclick="closeGame()">⬅</button>
-                <div class="game-title" id="lbl-game-title">Título</div>
+                <button class="btn-back" onclick="closeGame()">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                </button>
+                <div class="game-title">
+                    <span id="lbl-game-icon"></span>
+                    <span id="lbl-game-title">Título</span>
+                </div>
             </div>
             
             <div class="tab-bar-container">

@@ -147,7 +147,17 @@ html, body {
 }
 .btn-back:active { transform: translateY(4px); box-shadow: 0 0 0 #e2e8f0; }
 
-.game-title { font-size: 1.3rem; font-weight: 900; flex: 1; color: var(--text-main); text-align: center; padding-right: 48px;}
+.game-title { 
+    font-size: 1.3rem; 
+    font-weight: 900; 
+    flex: 1; 
+    color: var(--text-main); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Espaço entre o ícone e o texto */
+    padding-right: 48px; /* Compensa o botão de voltar para ficar no centro exato */
+}
 
 .tab-bar-container {
     background: var(--surface);
@@ -420,9 +430,15 @@ input[type="radio"] { transform: scale(1.5); accent-color: var(--primary); }
 .drag-item.box { border: 3px solid #64748b; background: #f8fafc; }
 
 #stage-cipo { 
-    background: linear-gradient(to bottom, #38bdf8 0%, #bae6fd 100%); 
-    display: flex; flex-direction: column-reverse; 
-    padding: 15px 0 25px 0; height: 100%; position: relative; overflow: hidden;
+    background-color: #a9dbf6; 
+    background-image: radial-gradient(#99cde9 4px, transparent 4px); 
+    background-size: 36px 36px; 
+    display: flex; 
+    flex-direction: column-reverse; 
+    padding: 15px 0 25px 0; 
+    height: 100%; 
+    position: relative; 
+    overflow: hidden;
 }
 .canopy {
     position: absolute; top: -40px; left: 50%; transform: translateX(-50%);

@@ -8,9 +8,16 @@ const state = {
 };
 
 function openGame(gameId, title) {
+    const icones = {
+        'gasolina': '🚗',
+        'cipo': '🐒',
+        'biscoito': '🍪'
+    };
     document.getElementById('screen-menu').classList.remove('active');
     document.getElementById('screen-game').classList.add('active');
     document.getElementById('lbl-game-title').innerText = title;
+    document.getElementById('lbl-game-icon').innerText = icones[gameId]; // Adiciona essa linha
+
 
     const container = document.getElementById('game-contents');
     const template = document.getElementById('tpl-' + gameId);
