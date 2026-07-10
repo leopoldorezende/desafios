@@ -46,7 +46,13 @@
                         <p>Ache os biscoitos fugitivos da vovó.</p>
                     </div>
                 </div>
-
+                <div class="game-card card-questao" onclick="openGame('questao', 'Questão de Questões')">
+                    <div class="game-icon">🧠</div>
+                    <div class="game-info">
+                        <h3>Questão de Questões</h3>
+                        <p>Descubra como resolver os enigmas.</p>
+                    </div>
+                </div>
                 <p>A cada nova partida, os números mudam para a brincadeira nunca ficar igual!</p>
             </div>
         </div>
@@ -191,6 +197,34 @@
             </div>
             <button class="btn-primary" onclick="verificarGas()">VERIFICAR</button>
             <div id="msgGas" class="feedback-msg"></div>
+        </div>
+    </template>
+
+    <template id="tpl-questao">
+        <div class="tab-section problema scrollable-content">
+            <div class="story-box" id="q-story">
+                <!-- Texto entra aqui -->
+            </div>
+        </div>
+        
+        <div class="tab-section solucao interactive-stage" style="padding: 20px; background: #f8fafc;">
+            <div class="canvas-tools">
+                <button class="btn-tool active" id="tool-lapis" onclick="setFerramentaCanvas('lapis')">✏️ Lápis</button>
+                <button class="btn-tool" id="tool-borracha" onclick="setFerramentaCanvas('borracha')">🧽 Borracha</button>
+                <button class="btn-tool" onclick="limparCanvas()" style="margin-left: auto;">🗑️ Limpar</button>
+            </div>
+            <canvas id="draw-canvas" width="800" height="800"></canvas>
+        </div>
+        
+        <div class="tab-section resposta scrollable-content">
+            <div class="form-group">
+                <label>O que deve ser feito para resolver? (Marque as opções corretas):</label>
+                <div id="q-opcoes" class="radio-group">
+                    <!-- Checkboxes gerados por JS -->
+                </div>
+            </div>
+            <button class="btn-primary" onclick="verificarQuestao()">CONFERIR RESPOSTA</button>
+            <div id="msgQuestao" class="feedback-msg"></div>
         </div>
     </template>
 

@@ -1,4 +1,5 @@
 const state = {
+    questao: { corretas: [] },
     cipo: { ansAndar: 0, ansTotal: 0 },
     biscoito: { restantes: 0, ansM1: 0, ansM2: 0 },
     gas: {
@@ -11,7 +12,8 @@ function openGame(gameId, title) {
     const icones = {
         'gasolina': '🚗',
         'cipo': '🐒',
-        'biscoito': '🍪'
+        'biscoito': '🍪',
+        'questao': '🧠'
     };
     document.getElementById('screen-menu').classList.remove('active');
     document.getElementById('screen-game').classList.add('active');
@@ -29,6 +31,7 @@ function openGame(gameId, title) {
     if (gameId === 'cipo') initCipo();
     if (gameId === 'biscoito') initBiscoito();
     if (gameId === 'gasolina') initGasolina();
+    if (gameId === 'questao') initQuestao();
 }
 
 function closeGame() {
@@ -477,4 +480,236 @@ window.showSuccessModal = function() {
 window.closeSuccessModal = function() {
     document.getElementById('success-modal').classList.remove('active');
     closeGame(); // Isso garante a volta para a página inicial
+};
+
+
+
+
+
+
+/* ==========================================
+   QUESTÃO DE QUESTÕES
+   ========================================== */
+const bancoQuestoes = [
+    {
+        historia: "O robô Zeca deu 15 passos para frente e 8 para trás. Quantos passos de distância ele está do ponto de partida?",
+        opcoes: [
+            "Desenhar uma reta, marcar 15 tracinhos pra frente e apagar 8", 
+            "Fazer a continha de subtração: 15 - 8", 
+            "Somar todos os passos que ele deu no total", 
+            "Desenhar 15 robôs e apagar 8"
+        ],
+        corretas: [0, 1]
+    },
+    {
+        historia: "A caixa tem 24 chocolates e você precisa dividir igualmente para 4 amigos. Quantos chocolates cada amigo vai receber?",
+        opcoes: [
+            "Desenhar 4 bonequinhos e ir distribuindo risquinhos um por um até dar 24", 
+            "Armar a conta de divisão: 24 ÷ 4", 
+            "Multiplicar 24 por 4", 
+            "Fazer a conta de menos: 24 - 4"
+        ],
+        corretas: [0, 1]
+    },
+    {
+        historia: "Para fazer 2 bolos a receita pede 6 ovos. Quantos ovos usamos para fazer apenas 1 bolo?",
+        opcoes: [
+            "Desenhar 6 bolinhas e separar em dois grupos iguais", 
+            "Fazer a conta: 6 dividido por 2", 
+            "Anotar o triplo do número 6", 
+            "Somar 6 ovos com 2 bolos"
+        ],
+        corretas: [0, 1]
+    },
+    {
+        historia: "Um trem saiu da cidade às 8h da manhã e chegou ao destino às 11h. Quantas horas durou essa viagem?",
+        opcoes: [
+            "Desenhar um relógio e contar os pulos do 8 até o 11", 
+            "Fazer a continha de subtração: 11 - 8", 
+            "Contar nos dedos partindo do 8: nove, dez, onze", 
+            "Somar 8 mais 11"
+        ],
+        corretas: [0, 1, 2]
+    },
+    {
+        historia: "Você guardou R$ 20, mas quer comprar um jogo que custa R$ 50. Quanto dinheiro ainda falta pra você conseguir comprar?",
+        opcoes: [
+            "Desenhar notas de 10 reais até chegar no 50 e ver quantas a mais precisou", 
+            "Armar a conta de menos: 50 - 20", 
+            "Somar 50 com 20", 
+            "Dividir 50 por 20"
+        ],
+        corretas: [0, 1]
+    },
+    {
+        historia: "Um prédio tem 5 andares. Em cada andar existem 4 janelas. Quantas janelas tem o prédio todo?",
+        opcoes: [
+            "Desenhar um prédio com 5 andares, colocar 4 bolinhas em cada e contar tudo", 
+            "Fazer a conta de multiplicação: 5 x 4", 
+            "Somar o número 4 cinco vezes: 4 + 4 + 4 + 4 + 4", 
+            "Desenhar apenas 4 janelas no quadro"
+        ],
+        corretas: [0, 1, 2]
+    },
+    {
+        historia: "A formiga andou 10cm, parou para descansar, e depois andou mais 15cm na mesma direção. Quantos centímetros ela andou ao todo?",
+        opcoes: [
+            "Fazer a conta de adição: 10 + 15", 
+            "Desenhar uma linha anotando 10, outra anotando 15 na frente e ver o tamanho total", 
+            "Subtrair 10 de 15", 
+            "Multiplicar 10 por 15"
+        ],
+        corretas: [0, 1]
+    },
+    {
+        historia: "Você comprou 3 pacotes de figurinhas. Cada pacote veio com 5 figurinhas repetidas dentro. Quantas repetidas você tirou no total?",
+        opcoes: [
+            "Desenhar 3 quadradinhos e colocar o número 5 dentro de cada um para somar", 
+            "Fazer a conta de vezes: 3 x 5", 
+            "Dividir 5 por 3",
+            "Fazer a conta de menos: 5 - 3"
+        ],
+        corretas: [0, 1]
+    },
+    {
+        historia: "Seu livro da escola tem 100 páginas no total. Você já leu 40 páginas. Quantas páginas faltam para terminar o livro?",
+        opcoes: [
+            "Fazer a conta de subtração: 100 - 40", 
+            "Desenhar 10 barrinhas valendo 10 cada e apagar 4 delas", 
+            "Somar 100 mais 40", 
+            "Multiplicar 100 por 40"
+        ],
+        corretas: [0, 1]
+    }
+];
+
+let qCanvasCtx = null;
+
+function initQuestao() {
+    // Sorteia a questão
+    const sorteada = bancoQuestoes[Math.floor(Math.random() * bancoQuestoes.length)];
+    state.questao.corretas = sorteada.corretas;
+
+    // Popula a história
+    document.getElementById('q-story').innerHTML = `<p class="highlight-text" style="text-align:left; margin-top:0">${sorteada.historia}</p>`;
+
+    // Popula os checkboxes
+    const container = document.getElementById('q-opcoes');
+    container.innerHTML = '';
+    sorteada.opcoes.forEach((op, index) => {
+        container.innerHTML += `
+            <label class="radio-label">
+                <input type="checkbox" value="${index}" class="q-checkbox">
+                ${op}
+            </label>
+        `;
+    });
+
+    // Inicia o Canvas (com setTimeout para dar tempo da div renderizar)
+    setTimeout(setupCanvas, 50);
+}
+
+function setupCanvas() {
+    const canvas = document.getElementById('draw-canvas');
+    if (!canvas) return;
+    
+    qCanvasCtx = canvas.getContext('2d');
+    qCanvasCtx.lineCap = 'round';
+    qCanvasCtx.lineJoin = 'round';
+    qCanvasCtx.lineWidth = 10;
+    qCanvasCtx.strokeStyle = '#334155';
+
+    let drawing = false;
+
+    // Converte a posição da tela para os 800x800 reais do canvas interno
+    const getPos = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        return {
+            x: (e.clientX - rect.left) * scaleX,
+            y: (e.clientY - rect.top) * scaleY
+        };
+    };
+
+    canvas.addEventListener('pointerdown', (e) => {
+        drawing = true;
+        const pos = getPos(e);
+        qCanvasCtx.beginPath();
+        qCanvasCtx.moveTo(pos.x, pos.y);
+        canvas.setPointerCapture(e.pointerId);
+    });
+
+    canvas.addEventListener('pointermove', (e) => {
+        if (!drawing) return;
+        const pos = getPos(e);
+        qCanvasCtx.lineTo(pos.x, pos.y);
+        qCanvasCtx.stroke();
+    });
+
+    canvas.addEventListener('pointerup', (e) => {
+        drawing = false;
+        canvas.releasePointerCapture(e.pointerId);
+    });
+}
+
+window.setFerramentaCanvas = function(tipo) {
+    document.querySelectorAll('.btn-tool').forEach(b => b.classList.remove('active'));
+    document.getElementById('tool-' + tipo).classList.add('active');
+
+    if (!qCanvasCtx) return;
+
+    if (tipo === 'lapis') {
+        qCanvasCtx.globalCompositeOperation = 'source-over';
+        qCanvasCtx.lineWidth = 10;
+    } else {
+        qCanvasCtx.globalCompositeOperation = 'destination-out';
+        qCanvasCtx.lineWidth = 50; // Borracha grandona
+    }
+};
+
+window.limparCanvas = function() {
+    if (qCanvasCtx) {
+        const canvas = document.getElementById('draw-canvas');
+        qCanvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+};
+
+window.verificarQuestao = function() {
+    const marcadas = Array.from(document.querySelectorAll('.q-checkbox:checked')).map(cb => parseInt(cb.value));
+    const corretas = state.questao.corretas;
+
+    const msg = document.getElementById('msgQuestao');
+    msg.className = 'feedback-msg';
+
+    if (marcadas.length === 0) {
+        msg.textContent = "Marque pelo menos uma opção! 📝";
+        msg.classList.add('error');
+        return;
+    }
+
+    let qtdAcertos = 0;
+    let qtdErros = 0;
+
+    marcadas.forEach(val => {
+        if (corretas.includes(val)) {
+            qtdAcertos++;
+        } else {
+            qtdErros++;
+        }
+    });
+
+    if (qtdAcertos === corretas.length && qtdErros === 0) {
+        showSuccessModal();
+        msg.style.display = 'none';
+    } else if (qtdAcertos > 0 && qtdErros > 0) {
+        msg.textContent = "Você acertou uma e errou outra! Revise suas escolhas. 🤔";
+        msg.classList.add('error');
+    } else if (qtdAcertos > 0 && qtdAcertos < corretas.length && qtdErros === 0) {
+        msg.textContent = "Quase lá! Há mais de uma forma correta de resolver. 🕵️‍♂️";
+        msg.classList.add('error');
+    } else {
+        msg.textContent = "Ops, não é bem por aí. Pense mais um pouquinho e tente de novo! 😅";
+        msg.classList.add('error');
+    }
 };
