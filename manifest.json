@@ -1,0 +1,16 @@
+{
+  "name": "Desafios para Casa",
+  "short_name": "Desafios",
+  "description": "Aplicativo de Desafios",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

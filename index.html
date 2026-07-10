@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Desafios Divertidos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="app">
+        <div id="screen-menu" class="screen active">
+            <div class="menu-header">
+                <h1>Desafios 🚀</h1>
+                <p>Escolha uma aventura para treinar a mente!</p>
+            </div>
+            <div class="game-list">
+                <div class="game-card card-cipo" onclick="openGame('cipo', 'Elevador de Cipó')">
+                    <div class="game-icon">🐒</div>
+                    <div class="game-info">
+                        <h3>Elevador de Cipó</h3>
+                        <p>Ajude o Quico nas entregas da árvore.</p>
+                    </div>
+                </div>
+                <div class="game-card card-biscoito" onclick="openGame('biscoito', 'Biscoitos Mágicos')">
+                    <div class="game-icon">🍪</div>
+                    <div class="game-info">
+                        <h3>Biscoitos Mágicos</h3>
+                        <p>Ache os biscoitos fugitivos da vovó.</p>
+                    </div>
+                </div>
+                <div class="game-card card-gasolina" onclick="openGame('gasolina', 'Gasolina Acabando')">
+                    <div class="game-icon">🚗</div>
+                    <div class="game-info">
+                        <h3>Gasolina Acabando</h3>
+                        <p>Calcule a rota e a gasolina do carro.</p>
+                    </div>
+                </div>
+
+                <p>Os valores dos desafios são alterados a cada vez que você os inicia.</p>
+            </div>
+        </div>
+
+        <div id="screen-game" class="screen">
+            <div class="game-header">
+                <button class="btn-back" onclick="closeGame()">⬅</button>
+                <div class="game-title" id="lbl-game-title">Título</div>
+            </div>
+            
+            <div class="tab-bar-container">
+                <div class="tab-bar" id="app-tabs">
+                    <button class="tab-btn active" id="btn-tab-problema" onclick="switchTab('problema')">História</button>
+                    <button class="tab-btn" id="btn-tab-solucao" onclick="switchTab('solucao')">Brincar</button>
+                    <button class="tab-btn" id="btn-tab-resposta" onclick="switchTab('resposta')">Responder</button>
+                </div>
+            </div>
+
+            <div class="game-content-area" id="game-contents">
+            </div>
+        </div>
+    </div>
+
+    <template id="tpl-cipo">
+        <div class="tab-section problema scrollable-content">
+            <div class="story-box">
+                </div>
+        </div>
+        <div class="tab-section solucao interactive-stage">
+            <div class="stage-area">
+                <div class="floating-toolbox" id="tb-cipo">
+                    <div class="drag-item monkey cipo-item">🐒</div>
+                    <div class="drag-item box cipo-item">📦</div>
+                    <div class="drag-item box cipo-item">📦</div>
+                    <div class="drag-item box cipo-item">📦</div>
+                </div>
+                <div id="stage-cipo">
+                </div>
+            </div>
+        </div>
+        <div class="tab-section resposta scrollable-content">
+            <div class="form-group">
+                <label>A) Em qual andar ele entregou a ÚLTIMA caixa?</label>
+                <input type="number" id="ansAndar" class="input-base" placeholder="Ex: 5">
+            </div>
+            <div class="form-group">
+                <label>B) Quantos andares andou no TOTAL?</label>
+                <input type="number" id="ansTotal" class="input-base" placeholder="Soma de tudo">
+            </div>
+            <button class="btn-primary" onclick="verificarCipo()">VERIFICAR</button>
+            <div id="msgCipo" class="feedback-msg"></div>
+        </div>
+    </template>
+
+    <template id="tpl-biscoito">
+        <div class="tab-section problema scrollable-content">
+            <div class="story-box">
+                </div>
+        </div>
+        <div class="tab-section solucao interactive-stage" style="background: #f0fdf4;">
+            <div class="b-controls">
+                <div class="contador-badge">Restam: <span id="b-contadorVal">0</span></div>
+                <div class="b-inputs">
+                    <select id="b-sabor" class="b-select">
+                        <option value="choc">🍫 Chocolate</option>
+                        <option value="morango">🍓 Morango</option>
+                        <option value="avela">🌰 Avelã</option>
+                    </select>
+                    <select id="b-formato" class="b-select">
+                        <option value="redondo">Redondo</option>
+                        <option value="quadrado">Quadrado</option>
+                        <option value="estrela">Estrela</option>
+                        <option value="nuvem">Nuvem</option>
+                        <option value="coracao">Coração</option>
+                    </select>
+                </div>
+                <button class="b-btn" onclick="criarBiscoitoHandler()">CRIAR BISCOITO</button>
+            </div>
+            <div class="b-board" id="b-board">
+                <div class="table-zone" data-name="Mesa 1"></div>
+                <div class="table-zone" data-name="Mesa 2"></div>
+                <div class="trash-can" id="b-trash">🗑️</div>
+            </div>
+        </div>
+        <div class="tab-section resposta scrollable-content">
+            <div class="form-group">
+                <label>Quantos fugiram da PRIMEIRA mesa?</label>
+                <input type="number" id="respM1" class="input-base" placeholder="Qtd. Mesa 1">
+            </div>
+            <div class="form-group">
+                <label>Quantos fugiram da SEGUNDA mesa?</label>
+                <input type="number" id="respM2" class="input-base" placeholder="Qtd. Mesa 2">
+            </div>
+            <button class="btn-primary" onclick="verificarBiscoito()">VERIFICAR</button>
+            <div id="msgBiscoito" class="feedback-msg"></div>
+        </div>
+    </template>
+
+    <template id="tpl-gasolina">
+        <div class="tab-section problema scrollable-content">
+            <div class="story-box">
+                </div>
+        </div>
+        <div class="tab-section solucao interactive-stage">
+            <div class="stage-area" id="stage-gas">
+                <div class="floating-toolbox" id="tb-gas">
+                    <div class="gas-node gas-item" id="n-olivia" data-name="Olívia">🏠</div>
+                    <div class="gas-node gas-item" id="n-eleonora" data-name="Eleonora">🏡</div>
+                    <div class="gas-node gas-item" id="n-padaria" data-name="Padaria">🥖</div>
+                    <div class="gas-node gas-item" id="n-posto" data-name="Posto">⛽</div>
+                </div>
+                <svg id="gas-svg"><path id="temp-line" d=""></path></svg>
+            </div>
+            <button class="btn-acao-palco" id="btnAcaoGas" onclick="toggleDrawingGas()">Ligar Distâncias</button>
+        </div>
+        <div class="tab-section resposta scrollable-content">
+            <div class="form-group">
+                <label>Vai ter combustível suficiente?</label>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="g-suficiente" value="sim"> Sim, será suficiente</label>
+                    <label class="radio-label"><input type="radio" name="g-suficiente" value="nao"> Não, vai faltar</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Quanto combustível falta/sobra? (em km)</label>
+                <input type="number" id="qtdCombustivel" class="input-base" placeholder="Ex: 5">
+            </div>
+            <button class="btn-primary" onclick="verificarGas()">VERIFICAR</button>
+            <div id="msgGas" class="feedback-msg"></div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
