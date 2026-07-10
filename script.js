@@ -830,30 +830,50 @@ function ganharAdesivo(jogoId) {
     const limites = { cipo: 5, biscoito: 5, gasolina: 5, questao: 15 };
     
     if (progressoAdesivos[jogoId] < limites[jogoId]) {
+        // Ganhou um adesivo novo
         progressoAdesivos[jogoId]++;
         localStorage.setItem('desafios_adesivos', JSON.stringify(progressoAdesivos));
         
-        // Descobre exatamente qual emoji o jogador acabou de liberar
         const adesivosDoJogo = bancoAdesivos.filter(a => a.jogo === jogoId);
         const emojiGanho = adesivosDoJogo[progressoAdesivos[jogoId] - 1].emoji;
         
-        // Aguarda 1.2s para o jogador ler o "Parabéns" antes do adesivo pular na tela
         setTimeout(() => {
-            mostrarPopupAdesivo(emojiGanho);
+            mostrarPopupAdesivo(emojiGanho, false);
+        }, 1200);
+    } else {
+        // Já pegou todos os adesivos desse jogo
+        setTimeout(() => {
+            mostrarPopupAdesivo('🏆', true);
         }, 1200);
     }
 }
 
-window.mostrarPopupAdesivo = function(emoji) {
-    // Esconde o modal de sucesso padrão de forma suave
+window.mostrarPopupAdesivo = function(emoji, jaCompletou) {
     document.getElementById('success-modal').classList.remove('active'); 
     
     const modal = document.getElementById('sticker-modal');
     const display = document.getElementById('sticker-emoji');
+    const titulo = document.getElementById('sticker-titulo');
+    const texto = document.getElementById('sticker-texto');
     
     display.innerText = emoji;
     
-    // Esse truque força o navegador a reiniciar a animação CSS do pulo
+    // Troca o visual dependendo se é adesivo novo ou coleção completa
+    if (jaCompletou) {
+        titulo.innerText = "COLEÇÃO COMPLETA!";
+        texto.innerText = "Você já pegou todos os adesivos deste desafio!";
+        titulo.style.color = "#10b981"; // Verde sucesso
+        display.style.borderColor = "#10b981";
+        // Altera a sombra injetando CSS inline para sobrepor a animação
+        setTimeout(() => { display.style.boxShadow = "0 8px 0 #059669"; }, 700);
+    } else {
+        titulo.innerText = "NOVO ADESIVO!";
+        texto.innerText = "Você ganhou um selo para sua coleção!";
+        titulo.style.color = "#3b82f6"; // Azul padrão
+        display.style.borderColor = "#fbbf24";
+        setTimeout(() => { display.style.boxShadow = "0 8px 0 #f59e0b"; }, 700);
+    }
+    
     display.classList.remove('sticker-reveal');
     void display.offsetWidth; 
     display.classList.add('sticker-reveal');
