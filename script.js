@@ -178,6 +178,28 @@ const svgsB = {
     coracao: `<svg viewBox="0 0 100 100"><path d="M50,90 L43,83 C18,60 5,45 5,30 C5,15 15,5 30,5 C40,5 47,10 50,18 C53,10 60,5 70,5 C85,5 95,15 95,30 C95,45 82,60 57,83 L50,90 Z" fill="CURRENT_COLOR"/></svg>`
 };
 
+function mostrarToastBiscoito() {
+    const board = document.getElementById('b-board');
+    if (!board) return;
+
+    // Remove o toast anterior se o usuário clicar muito rápido
+    const existingToast = document.getElementById('biscoito-toast');
+    if (existingToast) existingToast.remove();
+
+    // Cria o novo toast
+    const toast = document.createElement('div');
+    toast.id = 'biscoito-toast';
+    toast.className = 'toast-instruction'; // Aproveita os estilos e animações que já existem[cite: 1]
+    toast.innerHTML = `🍪 Restam criar: <strong>${state.biscoito.restantes}</strong>`;
+    
+    board.appendChild(toast);
+
+    // O toast some sozinho depois de 4 segundos
+    setTimeout(() => {
+        if (toast.parentNode) toast.remove();
+    }, 4000);
+}
+
 function initBiscoito() {
     const m1Foge = 2 + Math.floor(Math.random() * 4); // Quadrados de chocolate
     const m2Foge = 3 + Math.floor(Math.random() * 4); // Morangos estrela
@@ -194,7 +216,7 @@ function initBiscoito() {
     state.biscoito.ansM2 = morangoFica;
 
     state.biscoito.restantes = m1Foge + morangoFica + avelaFica + m2Foge + m2Fica;
-    document.getElementById('b-contadorVal').innerText = state.biscoito.restantes;
+    mostrarToastBiscoito();
 
     const story = document.querySelector('#game-contents .story-box');
     if(story) {
@@ -213,7 +235,7 @@ function initBiscoito() {
 window.criarBiscoitoHandler = function() {
     if (state.biscoito.restantes <= 0) return;
     state.biscoito.restantes--;
-    document.getElementById('b-contadorVal').innerText = state.biscoito.restantes;
+    mostrarToastBiscoito();
     
     const board = document.getElementById('b-board');
     const sabor = document.getElementById('b-sabor').value;
@@ -256,7 +278,7 @@ window.criarBiscoitoHandler = function() {
             cookie.style.transform = 'scale(0)';
             setTimeout(() => cookie.remove(), 150);
             state.biscoito.restantes++;
-            document.getElementById('b-contadorVal').innerText = state.biscoito.restantes;
+            mostrarToastBiscoito();
         }
     });
 
