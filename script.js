@@ -1,4 +1,5 @@
 const state = {
+    currentGame: '',
     questao: { corretas: [] },
     cipo: { ansAndar: 0, ansTotal: 0 },
     biscoito: { restantes: 0, ansM1: 0, ansM2: 0 },
@@ -9,6 +10,7 @@ const state = {
 };
 
 function openGame(gameId, title) {
+    state.currentGame = gameId;
     const icones = {
         'gasolina': '🚗',
         'cipo': '🐒',
@@ -500,6 +502,7 @@ window.verificarGas = function() {
 };
 window.showSuccessModal = function() {
     document.getElementById('success-modal').classList.add('active');
+    ganharAdesivo(state.currentGame); // Chama a função do WebStorage
 };
 
 window.closeSuccessModal = function() {
@@ -798,3 +801,119 @@ window.verificarQuestao = function() {
         msg.classList.add('error');
     }
 };
+
+/* ==========================================
+   SISTEMA DE ADESIVOS (WEBSTORAGE)
+   ========================================== */
+const bancoAdesivos = [
+    // Cipó (5 temáticos)
+    { id: 1, jogo: 'cipo', emoji: '🐒' }, { id: 2, jogo: 'cipo', emoji: '🍌' }, { id: 3, jogo: 'cipo', emoji: '🌴' }, { id: 4, jogo: 'cipo', emoji: '🦜' }, { id: 5, jogo: 'cipo', emoji: '🥥' },
+    
+    // Biscoito (5 temáticos)
+    { id: 6, jogo: 'biscoito', emoji: '🍪' }, { id: 7, jogo: 'biscoito', emoji: '🥛' }, { id: 8, jogo: 'biscoito', emoji: '🧁' }, { id: 9, jogo: 'biscoito', emoji: '🍩' }, { id: 10, jogo: 'biscoito', emoji: '🍓' },
+    
+    // Gasolina (5 temáticos)
+    { id: 11, jogo: 'gasolina', emoji: '🚗' }, { id: 12, jogo: 'gasolina', emoji: '⛽' }, { id: 13, jogo: 'gasolina', emoji: '🗺️' }, { id: 14, jogo: 'gasolina', emoji: '🚦' }, { id: 15, jogo: 'gasolina', emoji: '🐈' },
+    
+    // Como Resolver? (15 livres)
+    { id: 16, jogo: 'questao', emoji: '🧠' }, { id: 17, jogo: 'questao', emoji: '💡' }, { id: 18, jogo: 'questao', emoji: '🚀' }, { id: 19, jogo: 'questao', emoji: '🌟' }, { id: 20, jogo: 'questao', emoji: '🎨' },
+    { id: 21, jogo: 'questao', emoji: '🧩' }, { id: 22, jogo: 'questao', emoji: '🎮' }, { id: 23, jogo: 'questao', emoji: '🏆' }, { id: 24, jogo: 'questao', emoji: '🌈' }, { id: 25, jogo: 'questao', emoji: '⚡' },
+    { id: 26, jogo: 'questao', emoji: '🦉' }, { id: 27, jogo: 'questao', emoji: '🎯' }, { id: 28, jogo: 'questao', emoji: '🛸' }, { id: 29, jogo: 'questao', emoji: '🪄' }, { id: 30, jogo: 'questao', emoji: '🐉' }
+];
+
+// Carrega os dados ou inicia zerado
+let progressoAdesivos = JSON.parse(localStorage.getItem('desafios_adesivos')) || {
+    cipo: 0, biscoito: 0, gasolina: 0, questao: 0
+};
+
+function ganharAdesivo(jogoId) {
+    const limites = { cipo: 5, biscoito: 5, gasolina: 5, questao: 15 };
+    
+    if (progressoAdesivos[jogoId] < limites[jogoId]) {
+        progressoAdesivos[jogoId]++;
+        localStorage.setItem('desafios_adesivos', JSON.stringify(progressoAdesivos));
+        
+        // Descobre exatamente qual emoji o jogador acabou de liberar
+        const adesivosDoJogo = bancoAdesivos.filter(a => a.jogo === jogoId);
+        const emojiGanho = adesivosDoJogo[progressoAdesivos[jogoId] - 1].emoji;
+        
+        // Aguarda 1.2s para o jogador ler o "Parabéns" antes do adesivo pular na tela
+        setTimeout(() => {
+            mostrarPopupAdesivo(emojiGanho);
+        }, 1200);
+    }
+}
+
+window.mostrarPopupAdesivo = function(emoji) {
+    // Esconde o modal de sucesso padrão de forma suave
+    document.getElementById('success-modal').classList.remove('active'); 
+    
+    const modal = document.getElementById('sticker-modal');
+    const display = document.getElementById('sticker-emoji');
+    
+    display.innerText = emoji;
+    
+    // Esse truque força o navegador a reiniciar a animação CSS do pulo
+    display.classList.remove('sticker-reveal');
+    void display.offsetWidth; 
+    display.classList.add('sticker-reveal');
+    
+    modal.classList.add('active');
+};
+
+window.fecharPopupAdesivo = function() {
+    document.getElementById('sticker-modal').classList.remove('active');
+    closeGame(); // Já limpa a tela e volta para o menu inicial
+};
+
+window.abrirAdesivos = function() {
+    document.getElementById('screen-menu').classList.remove('active');
+    document.getElementById('screen-adesivos').classList.add('active');
+    renderizarAlbum();
+};
+
+window.fecharAdesivos = function() {
+    document.getElementById('screen-adesivos').classList.remove('active');
+    document.getElementById('screen-menu').classList.add('active');
+};
+
+function renderizarAlbum() {
+    const grid = document.getElementById('adesivos-grid');
+    grid.innerHTML = '';
+    
+    let totalConquistados = progressoAdesivos.cipo + progressoAdesivos.biscoito + progressoAdesivos.gasolina + progressoAdesivos.questao;
+
+    // Lógica da barra e mensagem de campeão
+    const calcProgress = Math.min(100, (totalConquistados / 30) * 100);
+    document.getElementById('adesivos-progress').style.width = calcProgress + '%';
+    document.getElementById('adesivos-count').innerText = `${totalConquistados}/30`;
+
+    const msgCampeao = document.getElementById('msg-campeao');
+    if(totalConquistados >= 30) {
+        msgCampeao.style.display = 'block';
+    } else {
+        msgCampeao.style.display = 'none';
+    }
+
+    // Controle interno de quais emojis desenhar
+    let contadores = { cipo: 0, biscoito: 0, gasolina: 0, questao: 0, extra: 0 };
+
+    bancoAdesivos.forEach(adesivo => {
+        let conquistado = false;
+        
+        if (adesivo.jogo !== 'extra') {
+            if (contadores[adesivo.jogo] < progressoAdesivos[adesivo.jogo]) {
+                conquistado = true;
+            }
+            contadores[adesivo.jogo]++;
+        }
+
+        const selo = document.createElement('div');
+        selo.className = `adesivo-selo ${conquistado ? 'conquistado' : ''}`;
+        selo.innerHTML = `
+            <div class="emoji">${conquistado ? adesivo.emoji : ''}</div>
+            <div class="numero">${adesivo.id}</div>
+        `;
+        grid.appendChild(selo);
+    });
+}

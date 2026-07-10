@@ -25,6 +25,10 @@
                 <p>Escolha uma aventura para treinar a mente!</p>
             </div>
             <div class="game-list">
+
+                            <!-- Coloque este botão dentro de #screen-menu, logo após a div .menu-header -->
+            <button class="btn-adesivos" onclick="abrirAdesivos()">🌟 Meus Adesivos</button>
+
                 <div class="game-card card-gasolina" onclick="openGame('gasolina', 'Gasolina Acabando')">
                     <div class="game-icon">🚗</div>
                     <div class="game-info">
@@ -54,6 +58,30 @@
                     </div>
                 </div>
                 <p>A cada nova partida, os números mudam para a brincadeira nunca ficar igual!</p>
+            </div>
+        </div>
+
+
+        <!-- Adicione esta nova tela junto com as outras .screen, antes do fechamento do #app -->
+        <div id="screen-adesivos" class="screen">
+            <div class="menu-header">
+                <h1>Álbum de Adesivos</h1>
+                <p>Acumule 30 selos!</p>
+            </div>
+            <div class="adesivos-container scrollable-content">
+                <div id="msg-campeao" class="msg-campeao">
+                    🏆 VOCÊ É O GRANDE CAMPEÃO DO APP! 🏆
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="adesivos-progress"></div>
+                    <span id="adesivos-count">0/30</span>
+                </div>
+                <div class="adesivos-grid" id="adesivos-grid">
+                    <!-- Selos injetados pelo JS -->
+                </div>
+            </div>
+            <div style="padding: 0 20px 20px;">
+                <button class="btn-primary" onclick="fecharAdesivos()">Voltar ao Menu</button>
             </div>
         </div>
 
@@ -89,6 +117,16 @@
                 <div class="stars-container">✨ ⭐ ✨</div>
                 <h2>PARABÉNS!</h2>
                 <p>VOCÊ CONSEGUIU!</p>
+            </div>
+        </div>
+
+        <!-- Modal de Novo Adesivo -->
+        <div id="sticker-modal" class="modal-overlay">
+            <div class="modal-content sticker-content">
+                <button class="btn-close-modal" onclick="fecharPopupAdesivo()">✖</button>
+                <h2>NOVO ADESIVO!</h2>
+                <div id="sticker-emoji" class="sticker-reveal">🎁</div>
+                <p>Você ganhou um selo para sua coleção!</p>
             </div>
         </div>
     </div>
@@ -228,6 +266,7 @@
         </div>
     </template>
 
+    
     <script src="script.js"></script>
 </body>
 </html>
