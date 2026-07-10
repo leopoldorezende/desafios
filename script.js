@@ -146,8 +146,8 @@ window.verificarCipo = function() {
     
     msg.className = 'feedback-msg';
     if (rAndar === state.cipo.ansAndar && rTotal === state.cipo.ansTotal) {
-        msg.textContent = "Uhuu! Correto! Você ajudou o Quico! 🎉";
-        msg.classList.add('success');
+        showSuccessModal();
+        msg.style.display = 'none';
     } else if (rAndar === state.cipo.ansAndar) {
         msg.textContent = "Andar certo! Mas reconte o total de movimentos. 🧮";
         msg.classList.add('error');
@@ -262,8 +262,8 @@ window.verificarBiscoito = function() {
     msg.className = 'feedback-msg';
     
     if (v1 === state.biscoito.ansM1 && v2 === state.biscoito.ansM2) {
-        msg.textContent = "Boa! Você achou os fugitivos e contou os de morango certinho! 🎉";
-        msg.classList.add('success');
+        showSuccessModal();
+        msg.style.display = 'none';
     } else {
         msg.textContent = "Ops! Confira a quantidade de fugitivos e de morangos na mesa. 🍪";
         msg.classList.add('error');
@@ -457,10 +457,18 @@ window.verificarGas = function() {
     }
 
     if (radioSim.value === state.gas.ansSuficiente && qtde === state.gas.ansQtde) {
-        msg.textContent = "Mandou bem! O cálculo está perfeito! 🎉🚗";
-        msg.classList.add('success');
+        showSuccessModal();
+        msg.style.display = 'none';
     } else {
         msg.textContent = "Algo não bateu! Tente refazer o trajeto na aba Brincar.";
         msg.classList.add('error');
     }
+};
+window.showSuccessModal = function() {
+    document.getElementById('success-modal').classList.add('active');
+};
+
+window.closeSuccessModal = function() {
+    document.getElementById('success-modal').classList.remove('active');
+    closeGame(); // Isso garante a volta para a página inicial
 };
