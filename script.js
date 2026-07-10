@@ -398,16 +398,18 @@ window.toggleDrawingGas = function() {
     state.gas.isDrawing = !state.gas.isDrawing;
     const btn = document.getElementById('btnAcaoGas');
     const nodes = document.querySelectorAll('.gas-item');
-    const stage = document.getElementById('stage-gas'); // Pegamos o palco para colocar o popup
-    
+    const stage = document.getElementById('stage-gas');
+    const textoLocais = document.querySelector('.texto-locais'); // Seleciona o texto do topo
+
     if (state.gas.isDrawing) {
         btn.textContent = "Clique para mover os locais";
         btn.style.background = "var(--danger)";
         btn.style.boxShadow = "0 6px 0 #b91c1c";
         nodes.forEach(n => n.classList.add('drawing-mode'));
 
-        // --- CÓDIGO DO POPUP COMEÇA AQUI ---
-        // Se já tiver um popup na tela, removemos antes de criar outro
+        // Altera o texto quando entra no modo de traçar distâncias
+        if (textoLocais) textoLocais.textContent = "Toque e arraste para ligar os locais";
+
         const existingToast = document.getElementById('gas-toast');
         if (existingToast) existingToast.remove();
 
@@ -417,24 +419,25 @@ window.toggleDrawingGas = function() {
         toast.innerHTML = '👆 <strong>Toque e arraste</strong> para ligar os locais!';
         stage.appendChild(toast);
 
-        // O popup some sozinho depois de 4 segundos (combinando com a animação do CSS)
         setTimeout(() => {
             if (toast.parentNode) toast.remove();
         }, 4000);
-        // --- CÓDIGO DO POPUP TERMINA AQUI ---
 
     } else {
         btn.textContent = "Clique para traçar distâncias";
         btn.style.background = "var(--primary)";
         btn.style.boxShadow = "0 6px 0 var(--primary-dark)";
         nodes.forEach(n => n.classList.remove('drawing-mode', 'selected'));
+        
+        // Volta o texto original quando retorna ao modo de mover
+        if (textoLocais) textoLocais.textContent = "Distribua os locais pelo cenário";
+
         state.gas.lines.forEach(p => p.remove());
         state.gas.labels.forEach(l => l.remove());
         state.gas.lines = []; state.gas.labels = []; state.gas.counts = {};
         document.getElementById('temp-line').setAttribute('d', '');
         state.gas.startNode = null;
         
-        // Se o usuário clicar pra cancelar antes do tempo, removemos a mensagem na hora
         const existingToast = document.getElementById('gas-toast');
         if (existingToast) existingToast.remove();
     }
