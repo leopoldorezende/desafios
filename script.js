@@ -1,6 +1,6 @@
 const state = {
     currentGame: '',
-    questao: { corretas: [] },
+    questao: { corretas: [], atual: -1 },
     cipo: { ansAndar: 0, ansTotal: 0 },
     biscoito: { restantes: 0, ansM1: 0, ansM2: 0 },
     gas: {
@@ -674,8 +674,21 @@ const bancoQuestoes = [
 let qCanvasCtx = null;
 
 function initQuestao() {
-    // Sorteia a questão
-    const sorteada = bancoQuestoes[Math.floor(Math.random() * bancoQuestoes.length)];
+    state.questao.atual = -1; // Garante que sorteie qualquer um ao abrir o jogo
+    mudarQuestao();
+    setTimeout(setupCanvas, 50);
+}
+
+window.mudarQuestao = function() {
+    let novoIndex;
+    
+    // Sorteia repetidamente até achar um índice diferente do atual
+    do {
+        novoIndex = Math.floor(Math.random() * bancoQuestoes.length);
+    } while (novoIndex === state.questao.atual && bancoQuestoes.length > 1);
+
+    state.questao.atual = novoIndex;
+    const sorteada = bancoQuestoes[novoIndex];
     state.questao.corretas = sorteada.corretas;
 
     // Popula a história
@@ -683,19 +696,28 @@ function initQuestao() {
 
     // Popula os checkboxes
     const container = document.getElementById('q-opcoes');
-    container.innerHTML = '';
-    sorteada.opcoes.forEach((op, index) => {
-        container.innerHTML += `
-            <label class="radio-label">
-                <input type="checkbox" value="${index}" class="q-checkbox">
-                ${op}
-            </label>
-        `;
-    });
+    if (container) {
+        container.innerHTML = '';
+        sorteada.opcoes.forEach((op, index) => {
+            container.innerHTML += `
+                <label class="radio-label">
+                    <input type="checkbox" value="${index}" class="q-checkbox">
+                    ${op}
+                </label>
+            `;
+        });
+    }
 
-    // Inicia o Canvas (com setTimeout para dar tempo da div renderizar)
-    setTimeout(setupCanvas, 50);
-}
+    // Esconde a mensagem de erro/acerto (caso estivesse aparecendo)
+    const msg = document.getElementById('msgQuestao');
+    if (msg) {
+        msg.style.display = 'none';
+        msg.className = 'feedback-msg';
+    }
+    
+    // Limpa o canvas de desenho pra nova questão
+    if (window.limparCanvas) limparCanvas();
+};
 
 function setupCanvas() {
     const canvas = document.getElementById('draw-canvas');
