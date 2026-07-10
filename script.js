@@ -15,7 +15,7 @@ function openGame(gameId, title) {
         'gasolina': '🚗',
         'cipo': '🐒',
         'biscoito': '🍪',
-        'questao': '🧠'
+        'questao': '🕵️'
     };
     document.getElementById('screen-menu').classList.remove('active');
     document.getElementById('screen-game').classList.add('active');
