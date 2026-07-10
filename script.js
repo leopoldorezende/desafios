@@ -602,6 +602,66 @@ const bancoQuestoes = [
             "Multiplicar 100 por 40"
         ],
         corretas: [0, 1]
+    },
+    {
+        historia: "A pizza foi cortada em 8 fatias. Você e seus amigos comeram 5 fatias no total. Quantas fatias sobraram na caixa?",
+        opcoes: [
+            "Fazer a conta de subtração: 8 - 5", 
+            "Desenhar uma pizza com 8 pedaços e riscar 5", 
+            "Somar as 8 fatias com as 5 que comeram", 
+            "Multiplicar 8 por 5"
+        ],
+        corretas: [0, 1]
+    },
+    {
+        historia: "Um polvo tem 8 tentáculos. Se estiverem 3 polvos brincando juntos no fundo do mar, quantos tentáculos tem ali ao todo?",
+        opcoes: [
+            "Somar o número 8 três vezes: 8 + 8 + 8", 
+            "Fazer a conta de multiplicação: 3 x 8", 
+            "Desenhar 3 polvos e contar todos os bracinhos um por um", 
+            "Dividir 8 por 3"
+        ],
+        corretas: [0, 1, 2]
+    },
+    {
+        historia: "O bolo da vovó demora 40 minutos para assar. Se ela colocou o bolo no forno às 2 horas da tarde, que horas ele vai ficar pronto?",
+        opcoes: [
+            "Olhar num relógio e avançar 40 minutinhos a partir do número 2", 
+            "Somar os minutos: 00 + 40, o que dá 2h e 40 minutos", 
+            "Subtrair 40 de 2", 
+            "Multiplicar 40 por 2"
+        ],
+        corretas: [0, 1]
+    },
+    {
+        historia: "Você foi na padaria com uma nota de R$ 10. O pão de queijo custou R$ 6. Quanto você vai receber de troco?",
+        opcoes: [
+            "Fazer a conta de menos: 10 - 6", 
+            "Contar nos dedos partindo do 6 até chegar no 10", 
+            "Somar 10 mais 6", 
+            "Desenhar 10 moedas de 1 real e apagar 6 delas"
+        ],
+        corretas: [0, 1, 3]
+    },
+    {
+        historia: "O sapinho deu 4 pulos de 2 metros cada um para atravessar o lago. Quantos metros ele pulou no total?",
+        opcoes: [
+            "Somar os pulos: 2 + 2 + 2 + 2", 
+            "Fazer a conta de vezes: 4 x 2", 
+            "Subtrair 2 de 4", 
+            "Fazer a conta de divisão: 4 ÷ 2"
+        ],
+        corretas: [0, 1]
+    },
+    {
+        historia: "Uma caixa de lápis de cor vem com 12 cores. Se você juntar 2 caixas iguais, com quantos lápis você vai ficar?",
+        opcoes: [
+            "Fazer a continha de adição: 12 + 12",
+            "Multiplicar 12 por 2",
+            "Desenhar as duas caixas, colocar 12 risquinhos em cada e contar tudo",
+            "Fazer a conta de menos: 12 - 2"
+        ],
+        corretas: [0, 1, 2]
     }
 ];
 
