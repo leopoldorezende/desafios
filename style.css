@@ -70,7 +70,7 @@ html, body {
 
 /* MENU INICIAL */
 .menu-header {
-    padding: 60px 24px 24px;
+    padding: 40px 24px 24px;
     background: var(--primary);
     border-bottom-left-radius: var(--radius-lg);
     border-bottom-right-radius: var(--radius-lg);
