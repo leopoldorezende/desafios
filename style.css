@@ -350,7 +350,7 @@ input[type="radio"] { transform: scale(1.5); accent-color: var(--primary); }
 
 .floating-toolbox {
     position: absolute;
-    top: 25px; /* Distância do topo do cenário */
+    top: 55px; /* Distância do topo do cenário */
     left: 0;
     width: 100%;
     display: flex;
@@ -694,3 +694,15 @@ input[type="radio"] { transform: scale(1.5); accent-color: var(--primary); }
 
 /* Modifique a linha existente do input[type="radio"] para suportar checkbox também */
 input[type="radio"], input[type="checkbox"] { transform: scale(1.5); accent-color: var(--primary); }
+
+.texto-locais {
+    position: absolute;
+    width: 90%;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--text-muted);
+    text-align: center;
+}

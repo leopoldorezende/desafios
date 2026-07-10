@@ -379,7 +379,7 @@ window.toggleDrawingGas = function() {
     const stage = document.getElementById('stage-gas'); // Pegamos o palco para colocar o popup
     
     if (state.gas.isDrawing) {
-        btn.textContent = "Mover locais";
+        btn.textContent = "Clique para mover os locais";
         btn.style.background = "var(--danger)";
         btn.style.boxShadow = "0 6px 0 #b91c1c";
         nodes.forEach(n => n.classList.add('drawing-mode'));
@@ -402,7 +402,7 @@ window.toggleDrawingGas = function() {
         // --- CÓDIGO DO POPUP TERMINA AQUI ---
 
     } else {
-        btn.textContent = "Ligar Distâncias";
+        btn.textContent = "Clique para traçar distâncias";
         btn.style.background = "var(--primary)";
         btn.style.boxShadow = "0 6px 0 var(--primary-dark)";
         nodes.forEach(n => n.classList.remove('drawing-mode', 'selected'));
