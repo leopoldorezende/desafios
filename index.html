@@ -117,19 +117,18 @@
                 <button class="b-btn" onclick="criarBiscoitoHandler()">CRIAR BISCOITO</button>
             </div>
             <div class="b-board" id="b-board">
-                <div class="table-zone" data-name="Mesa 1"></div>
-                <div class="table-zone" data-name="Mesa 2"></div>
+                <div data-name="Mesa"></div> <!-- Apenas uma mesa -->
                 <div class="trash-can" id="b-trash">🗑️</div>
             </div>
         </div>
         <div class="tab-section resposta scrollable-content">
             <div class="form-group">
-                <label>Quantos fugiram da PRIMEIRA mesa?</label>
-                <input type="number" id="respM1" class="input-base" placeholder="Qtd. Mesa 1">
+                <label>Quantos biscoitos fugiram da mesa?</label> <!-- Pergunta 1 -->
+                <input type="number" id="respM1" class="input-base" placeholder="Qtd. total">
             </div>
             <div class="form-group">
-                <label>Quantos fugiram da SEGUNDA mesa?</label>
-                <input type="number" id="respM2" class="input-base" placeholder="Qtd. Mesa 2">
+                <label>Quantos biscoitos de morango ficaram na mesa?</label>
+                <input type="number" id="respM2" class="input-base" placeholder="Qtd. de morango">
             </div>
             <button class="btn-primary" onclick="verificarBiscoito()">VERIFICAR</button>
             <div id="msgBiscoito" class="feedback-msg"></div>

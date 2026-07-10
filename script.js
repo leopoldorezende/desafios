@@ -170,33 +170,32 @@ const svgsB = {
 };
 
 function initBiscoito() {
-    const m1Foge = 2 + Math.floor(Math.random() * 4); 
-    const m1Fica = 4 + Math.floor(Math.random() * 3);
-    state.biscoito.ansM1 = m1Foge;
+    const m1Foge = 2 + Math.floor(Math.random() * 4); // Quadrados de chocolate
+    const m2Foge = 3 + Math.floor(Math.random() * 4); // Morangos estrela
 
-    const m2Foge = 3 + Math.floor(Math.random() * 4); 
-    const m2Fica = 2 + Math.floor(Math.random() * 3);
-    state.biscoito.ansM2 = m2Foge;
+    // Arrumando a conta total de fugitivos (chocolate + estrelas)
+    state.biscoito.ansM1 = m1Foge + m2Foge;
 
-    state.biscoito.restantes = m1Foge + m1Fica + m2Foge + m2Fica;
+    // Separando os que ficam por sabor
+    const morangoFica = 2 + Math.floor(Math.random() * 3);
+    const avelaFica = 2 + Math.floor(Math.random() * 3);
+    const m2Fica = 2 + Math.floor(Math.random() * 3); // Coração sem chocolate
+
+    // Salvando a resposta exata de morangos que ficam
+    state.biscoito.ansM2 = morangoFica;
+
+    state.biscoito.restantes = m1Foge + morangoFica + avelaFica + m2Foge + m2Fica;
     document.getElementById('b-contadorVal').innerText = state.biscoito.restantes;
 
     const story = document.querySelector('#game-contents .story-box');
     if(story) {
         story.innerHTML = `
-            <p>A vovó fez <strong>${state.biscoito.restantes} biscoitos mágicos</strong> divididos em duas mesas.</p>
-            <div class="alert-box">⚠️ Regra mágica: se tiver chocolate OU formato de estrela, ele cria perninhas e foge!</div>
-            
-            <h4>Mesa 1:</h4>
+            <p>A vovó fez <strong>${state.biscoito.restantes} biscoitos mágicos</strong>, mas eles seguem uma regra mágica: se tiver chocolate ou formato de estrela, ele cria perninhas e foge!</p>
             <ul>
-                <li>${m1Fica} de morango e avelã em formatos normais.</li>
-                <li>${m1Foge} misturados entre chocolate e formato de estrela.</li>
-            </ul>
-
-            <h4>Mesa 2:</h4>
-            <ul>
-                <li>${m2Foge} biscoitos contendo chocolate ou formato de estrela.</li>
-                <li>${m2Fica} completamente normais sem os ingredientes mágicos.</li>
+                <li>${morangoFica} de morango e ${avelaFica} de avelã em formatos redondos.</li>
+                <li>${m1Foge} biscoitos quadrados de chocolate.</li>
+                <li>${m2Foge} biscoitos de morango com forma de estrela.</li>
+                <li>E o resto eram de coração sem chocolate.</li>
             </ul>
         `;
     }
@@ -261,11 +260,12 @@ window.verificarBiscoito = function() {
     const msg = document.getElementById('msgBiscoito');
     
     msg.className = 'feedback-msg';
+    
     if (v1 === state.biscoito.ansM1 && v2 === state.biscoito.ansM2) {
-        msg.textContent = "Boa! Você achou todos os fugitivos! 🎉";
+        msg.textContent = "Boa! Você achou os fugitivos e contou os de morango certinho! 🎉";
         msg.classList.add('success');
     } else {
-        msg.textContent = "Ops! Revise a Regra Mágica (Chocolate OU Estrela). 🍪";
+        msg.textContent = "Ops! Confira a quantidade de fugitivos e de morangos na mesa. 🍪";
         msg.classList.add('error');
     }
 };
